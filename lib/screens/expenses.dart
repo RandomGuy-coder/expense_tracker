@@ -38,15 +38,19 @@ class _ExpensesState extends State<Expenses> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          const Text('The Chart'),
-          Expanded(
-              child: ExpensesList(
+      body: Column(children: [
+        const Text('The Chart'),
+        Expanded(
+          child: (_registeredExpenses.isNotEmpty)
+              ? ExpensesList(
                   expenses: _registeredExpenses,
-                  onRemoveExpense: _removeExpense))
-        ],
-      ),
+                  onRemoveExpense: _removeExpense,
+                )
+              : const Center(
+                  child: Text('No expenses found. Start adding some!'),
+                ),
+        )
+      ]),
     );
   }
 
@@ -57,9 +61,26 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _removeExpense(Expense expense) {
+    final expenseIndex = _registeredExpenses.indexOf(expense);
+
     setState(() {
       _registeredExpenses.remove(expense);
     });
+
+    // Show snackbar to notify expense deleted and allow UNDO
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: const Text('Expense Deleted'),
+        action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              setState(() {
+                _registeredExpenses.insert(expenseIndex, expense);
+              });
+            }),
+      ),
+    );
   }
 
   void _openAddExpenseOverlay() {
