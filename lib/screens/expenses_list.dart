@@ -15,15 +15,19 @@ class ExpensesList extends StatelessWidget {
         itemCount: expenses.length,
         itemBuilder: (ctx, index) => Dismissible(
               key: ValueKey(expenses[index]),
+              background: Container(
+                color: Theme.of(context).colorScheme.error,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+              ),
               onDismissed: (direction) {
                 onRemoveExpense(expenses[index]);
               },
-              child: expenseItem(expenses[index]),
+              child: expenseItem(expenses[index], context),
             ));
   }
 }
 
-Widget expenseItem(Expense expense) {
+Widget expenseItem(Expense expense, BuildContext context) {
   return Card(
     child: Padding(
       padding: const EdgeInsets.symmetric(
@@ -31,8 +35,12 @@ Widget expenseItem(Expense expense) {
         vertical: 16,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(expense.title),
+          Text(
+            expense.title,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 4),
           Row(
             children: [

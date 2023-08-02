@@ -67,6 +67,9 @@ class _ExpensesState extends State<Expenses> {
       _registeredExpenses.remove(expense);
     });
 
+    //Can be used to clear snackbars if have mutiple items deleted
+    /**  ScaffoldMessenger.of(context).clearSnackBars(); */
+
     // Show snackbar to notify expense deleted and allow UNDO
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
