@@ -27,35 +27,40 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-      child: Column(children: [
-        TextField(
-          controller: _titleController,
-          maxLength: 50,
-          keyboardType: TextInputType.name,
-          decoration: const InputDecoration(label: Text('Title')),
-        ),
-        amountAndDate(),
-        const SizedBox(
-          height: 16,
-        ),
-        Row(
-          children: [
-            categoryDropDown(),
-            const Spacer(),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-                onPressed: _submitExpenseData,
-                child: const Text('Save Expense'))
-          ],
-        )
-      ]),
+    // Using for keyboard overlapping UI
+    final keyboard = MediaQuery.of(context).viewInsets.bottom;
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16, 48, 16, keyboard + 16),
+        child: Column(children: [
+          TextField(
+            controller: _titleController,
+            maxLength: 50,
+            keyboardType: TextInputType.name,
+            decoration: const InputDecoration(label: Text('Title')),
+          ),
+          amountAndDate(),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+            children: [
+              categoryDropDown(),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                  onPressed: _submitExpenseData,
+                  child: const Text('Save Expense'))
+            ],
+          )
+        ]),
+      ),
     );
   }
 
